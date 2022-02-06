@@ -14,5 +14,10 @@
       "name": "jwt.claims.exp.minutes",
       "type": "java.lang.Long",
       "description": "Jwt expiration delta from iss."
+    },
+    {
+      "name": "auth.security.bcrypt.strength",
+      "type": "java.lang.Integer",
+      "description": "Bcrypt password encryption strength."
     }
   ] }

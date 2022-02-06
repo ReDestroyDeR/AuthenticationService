@@ -8,6 +8,9 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.yaml
 
+server:
+  port: 80 # Move to 443 and HTTPS-Only
+
 jwt:
   claims:
       exp:
@@ -15,3 +18,8 @@ jwt:
   keys:
     private: ${JWT_PRIVATE_KEY}
     public: ${JWT_PUBLIC_KEY}
+
+auth:
+  security:
+    bcrypt:
+      strength: 10

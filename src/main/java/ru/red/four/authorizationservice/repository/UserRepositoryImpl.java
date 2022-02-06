@@ -1,4 +1,4 @@
-package ru.red.four.authorizationservice.service;
+package ru.red.four.authorizationservice.repository;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +10,11 @@ import static ru.red.four.authorizationservice.jooq.tables.Users.USERS;
 
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserRepositoryImpl implements UserRepository {
     private final DSLContext jooq;
 
     @Autowired
-    public UserServiceImpl(DSLContext jooq) {
+    public UserRepositoryImpl(DSLContext jooq) {
         this.jooq = jooq;
     }
 

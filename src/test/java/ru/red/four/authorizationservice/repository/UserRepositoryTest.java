@@ -1,4 +1,4 @@
-package ru.red.four.authorizationservice.service;
+package ru.red.four.authorizationservice.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase
 @AutoConfigureDataJdbc
-class UserServiceTest {
+class UserRepositoryTest {
     @Autowired
-    UserService service;
+    UserRepository service;
 
     private UsersRecord createTestUsersRecord() {
         UsersRecord record = new UsersRecord();

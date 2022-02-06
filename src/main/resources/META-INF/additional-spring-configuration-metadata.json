@@ -19,5 +19,10 @@
       "name": "auth.security.bcrypt.strength",
       "type": "java.lang.Integer",
       "description": "Bcrypt password encryption strength."
+    },
+    {
+      "name": "auth.security.salt.length",
+      "type": "java.lang.Integer",
+      "description": "Salt length."
     }
   ] }

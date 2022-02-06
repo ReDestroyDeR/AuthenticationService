@@ -17,10 +17,10 @@ import java.security.Key;
 public class AuthController {
 
     private final UserService userService;
-    private final Key publicKey;
+    private final String publicKey;
 
     @Autowired
-    public AuthController(UserService userService, @Value("jwt.keys.public") Key publicKey) {
+    public AuthController(UserService userService, @Value("${jwt.keys.public}") String publicKey) {
         this.userService = userService;
         this.publicKey = publicKey;
     }
@@ -37,6 +37,6 @@ public class AuthController {
 
     @GetMapping("public-key")
     public Mono<String> publicKey() {
-        return Mono.just(publicKey.toString());
+        return Mono.just(publicKey);
     }
 }

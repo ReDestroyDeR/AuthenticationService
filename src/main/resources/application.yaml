@@ -9,7 +9,7 @@ spring:
     change-log: classpath:/db/changelog/changelog-master.yaml
 
 server:
-  port: 80 # Move to 443 and HTTPS-Only
+  port: 8080 # Move to 443 and HTTPS-Only
 
 jwt:
   claims:
@@ -21,5 +21,7 @@ jwt:
 
 auth:
   security:
+    salt:
+      length: 32
     bcrypt:
       strength: 10

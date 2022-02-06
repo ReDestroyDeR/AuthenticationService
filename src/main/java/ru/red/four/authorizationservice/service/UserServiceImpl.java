@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository repository,
                            JwtProvider jwtProvider,
                            PasswordEncoder passwordEncoder,
-                           @Value("auth.security.salt.length") Integer saltLength) {
+                           @Value("${auth.security.salt.length}") Integer saltLength) {
         this.repository = repository;
         this.jwtProvider = jwtProvider;
         this.passwordEncoder = passwordEncoder;

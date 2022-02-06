@@ -14,7 +14,7 @@ import java.security.Key;
 public class JwtValidator {
     private final JwtParser parser;
 
-    public JwtValidator(@Value("jwt.keys.public") Key key) {
+    public JwtValidator(@Value("jwt.keys.public") String key) {
         this.parser = Jwts.parser().setSigningKey(key);
         log.info("Initialized JWT Validator");
     }

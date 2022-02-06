@@ -23,8 +23,8 @@ public class JwtProvider {
     private final Long jwtMinutes;
 
     @Autowired
-    public JwtProvider(@Value("jwt.keys.private") String privateKey,
-                       @Value("jwt.claims.exp.minutes") Long jwtMinutes) {
+    public JwtProvider(@Value("${jwt.keys.private}") String privateKey,
+                       @Value("${jwt.claims.exp.minutes}") Long jwtMinutes) {
         this.privateKey = privateKey;
         this.jwtMinutes = jwtMinutes;
         log.info("Initialized JWT Provider");

@@ -29,6 +29,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Mono<UsersRecord> getUser(String username) {
+        return Mono.justOrEmpty(
+                jooq.selectFrom(USERS)
+                        .where(USERS.USERNAME.eq(username))
+                        .fetchOne()
+        );
+    }
+
+    @Override
     public Mono<UsersRecord> createUser(UsersRecord record) {
         return Mono.justOrEmpty(
                 jooq.insertInto(USERS)

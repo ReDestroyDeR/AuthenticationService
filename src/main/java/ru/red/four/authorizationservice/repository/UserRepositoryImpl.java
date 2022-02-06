@@ -2,6 +2,7 @@ package ru.red.four.authorizationservice.repository;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
@@ -9,7 +10,7 @@ import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
 import static ru.red.four.authorizationservice.jooq.tables.Users.USERS;
 
 
-@Service
+@Repository
 public class UserRepositoryImpl implements UserRepository {
     private final DSLContext jooq;
 

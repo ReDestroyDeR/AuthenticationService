@@ -7,3 +7,11 @@ spring:
 
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.yaml
+
+jwt:
+  claims:
+      exp:
+        minutes: 30
+  keys:
+    private: ${JWT_PRIVATE_KEY}
+    public: ${JWT_PUBLIC_KEY}

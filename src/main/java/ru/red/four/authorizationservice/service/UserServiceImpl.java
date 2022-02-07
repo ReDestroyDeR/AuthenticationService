@@ -12,8 +12,7 @@ import ru.red.four.authorizationservice.exception.BadPasswordException;
 import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
 import ru.red.four.authorizationservice.repository.UserRepository;
 import ru.red.four.authorizationservice.security.jwt.JwtProvider;
-import ru.red.four.authorizationservice.security.jwt.JwtValidator;
-import ru.red.four.authorizationservice.util.RandomStringUtil;
+import ru.red.four.authorizationservice.util.StringUtil;
 
 @Log4j2
 @Service
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService {
         UsersRecord record = new UsersRecord();
         String username = userDetachedDTO.getUsername();
         record.setUsername(username);
-        String salt = RandomStringUtil.generateRandomString(this.saltLength);
+        String salt = StringUtil.generateRandomString(this.saltLength);
         String password = passwordEncoder.encode(record.getPassword().concat(salt));
         record.setSalt(salt);
         record.setPassword(password);

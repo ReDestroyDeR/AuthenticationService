@@ -4,13 +4,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
 
-import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.security.PrivateKey;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -19,11 +18,11 @@ import java.time.ZoneOffset;
 @Component
 @SuppressWarnings("ClassCanBeRecord")
 public class JwtProvider {
-    private final String privateKey;
+    private final Key privateKey;
     private final Long jwtMinutes;
 
     @Autowired
-    public JwtProvider(@Value("${jwt.keys.private}") String privateKey,
+    public JwtProvider(PrivateKey privateKey,
                        @Value("${jwt.claims.exp.minutes}") Long jwtMinutes) {
         this.privateKey = privateKey;
         this.jwtMinutes = jwtMinutes;

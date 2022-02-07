@@ -4,18 +4,17 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import java.security.PublicKey;
 
 @Log4j2
 @Component
 public class JwtValidator {
     private final JwtParser parser;
 
-    public JwtValidator(@Value("jwt.keys.public") String key) {
-        this.parser = Jwts.parser().setSigningKey(key);
+    public JwtValidator(PublicKey publicKey) {
+        this.parser = Jwts.parser().setSigningKey(publicKey);
         log.info("Initialized JWT Validator");
     }
 

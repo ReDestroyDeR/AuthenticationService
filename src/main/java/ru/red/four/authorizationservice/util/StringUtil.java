@@ -1,8 +1,20 @@
 package ru.red.four.authorizationservice.util;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class RandomStringUtil {
+public class StringUtil {
+    public static String wrapString(String str, int length) {
+        List<String> chars = str.codePoints().mapToObj(Character::toString).collect(Collectors.toList());
+        for (int i = 0; i < chars.size(); i++) {
+            if (i % (length + 1) == 0) {
+                chars.add(i, "\n");
+            }
+        }
+        return String.join("", chars);
+    }
+
     public static String generateRandomString(int length) {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'

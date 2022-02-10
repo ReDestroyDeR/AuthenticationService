@@ -14,13 +14,20 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+/**
+ * JWT Token Provider
+ * Hardcoded to be working with RSA Encryption algorithm
+ */
 @Log4j2
 @Component
-@SuppressWarnings("ClassCanBeRecord")
 public class JwtProvider {
     private final Key privateKey;
     private final Long jwtMinutes;
 
+    /**
+     * @param privateKey PKCS#8 Private key
+     * @param jwtMinutes Number of minutes till the key will be available
+     */
     @Autowired
     public JwtProvider(PrivateKey privateKey,
                        @Value("${jwt.claims.exp.minutes}") Long jwtMinutes) {
@@ -29,6 +36,29 @@ public class JwtProvider {
         log.info("Initialized JWT Provider");
     }
 
+    /**
+     * Factory method for creating JWTs<br>
+     * <b>Claims</b>
+     * <table>
+     * <th>Field</th>
+     * <th>Description</th>
+     * <tr>
+     * <td>sub</td>
+     * <td>User id</td>
+     * </tr>
+     * <tr>
+     * <td>iss</td>
+     * <td>JWT Creation time</td>
+     * </tr>
+     * <tr>
+     * <td>exp</td>
+     * <td>JWT Creation time plus jwtMinutes property from config</td>
+     * </tr>
+     * </table>
+     *
+     * @param record containing user credentials
+     * @return {@link String} with JSON Web Token
+     */
     public String createJwt(UsersRecord record) {
         var id = record.getId();
         var username = record.getUsername();

@@ -11,7 +11,6 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -46,13 +45,13 @@ public class SecurityConfig {
                 new String(decoder.decode(publicKey.getBytes(StandardCharsets.UTF_8)))
                         .replace("-----BEGIN PUBLIC KEY-----", "")
                         .replace("-----END PUBLIC KEY-----", "")
-                        .replaceAll("\\s+","")
+                        .replaceAll("\\s+", "")
         );
 
         // X.509 is used for public key. It is generated from .pem and, it works?
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec public_spec = new X509EncodedKeySpec(public_bytes);
-        return (RSAPublicKey) keyFactory.generatePublic(public_spec);
+        return keyFactory.generatePublic(public_spec);
     }
 
     @Bean
@@ -65,7 +64,7 @@ public class SecurityConfig {
                 new String(decoder.decode(privateKey.getBytes(StandardCharsets.UTF_8)))
                         .replace("-----BEGIN PRIVATE KEY-----", "")
                         .replace("-----END PRIVATE KEY-----", "")
-                        .replaceAll("\\s+","")
+                        .replaceAll("\\s+", "")
         );
 
         // Using PKCS8 For private key (As standard states)

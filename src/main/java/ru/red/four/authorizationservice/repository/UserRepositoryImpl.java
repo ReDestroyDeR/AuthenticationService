@@ -20,49 +20,69 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<UsersRecord> getUser(Long id) {
-        return Mono.justOrEmpty(
-                jooq.selectFrom(USERS)
+        return Mono.create(sink -> {
+            try {
+                sink.success(jooq.selectFrom(USERS)
                         .where(USERS.ID.eq(id))
-                        .fetchOne()
-        );
+                        .fetchOne());
+            } catch (Exception e) {
+                sink.error(e);
+            }
+        });
     }
 
     @Override
     public Mono<UsersRecord> getUser(String username) {
-        return Mono.justOrEmpty(
-                jooq.selectFrom(USERS)
+        return Mono.create(sink -> {
+            try {
+                sink.success(jooq.selectFrom(USERS)
                         .where(USERS.USERNAME.eq(username))
-                        .fetchOne()
-        );
+                        .fetchOne());
+            } catch (Exception e) {
+                sink.error(e);
+            }
+        });
     }
 
     @Override
     public Mono<UsersRecord> createUser(UsersRecord record) {
-        return Mono.justOrEmpty(
-                jooq.insertInto(USERS)
+        return Mono.create(sink -> {
+            try {
+                sink.success(jooq.insertInto(USERS)
                         .set(record)
                         .returning()
-                        .fetchOne()
-        );
+                        .fetchOne());
+            } catch (Exception e) {
+                sink.error(e);
+            }
+        });
     }
 
     @Override
     public Mono<UsersRecord> updateUser(Long id, UsersRecord record) {
-        return Mono.justOrEmpty(
-                jooq.update(USERS)
+        return Mono.create(sink -> {
+            try {
+                sink.success(jooq.update(USERS)
                         .set(record)
                         .where(USERS.ID.eq(id))
                         .returning()
-                        .fetchOne()
-        );
+                        .fetchOne());
+            } catch (Exception e) {
+                sink.error(e);
+            }
+        });
     }
 
     @Override
     public Mono<Integer> deleteUser(Long id) {
-        return Mono.justOrEmpty(
-                jooq.delete(USERS)
+        return Mono.create(sink -> {
+            try {
+                sink.success(jooq.delete(USERS)
                         .where(USERS.ID.eq(id))
-                        .execute()
-        );
+                        .execute());
+            } catch (Exception e) {
+                sink.error(e);
+            }
+        });
     }
 }

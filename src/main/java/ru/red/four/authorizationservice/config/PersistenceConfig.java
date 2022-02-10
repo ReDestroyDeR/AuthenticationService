@@ -52,10 +52,7 @@ public class PersistenceConfig {
             @Override
             public void exception(ExecuteContext ctx) {
                 if (ctx.exception() != null) {
-                    log.fatal(ctx.exception());
-                }
-                if (ctx.sqlException() != null) {
-                    log.fatal(ctx.sqlException());
+                    log.info(ctx.exception());
                 }
             }
         };

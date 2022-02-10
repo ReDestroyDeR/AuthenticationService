@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import ru.red.four.authorizationservice.dto.UserDTO;
 import ru.red.four.authorizationservice.dto.UserDetachedDTO;
 import ru.red.four.authorizationservice.exception.BadPasswordException;
+import ru.red.four.authorizationservice.exception.BadRequestException;
 import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
 import ru.red.four.authorizationservice.repository.UserRepository;
 import ru.red.four.authorizationservice.security.jwt.JwtProvider;
@@ -39,10 +40,11 @@ public class UserServiceImpl implements UserService {
         String username = userDetachedDTO.getUsername();
         record.setUsername(username);
         String salt = StringUtil.generateRandomString(this.saltLength);
-        String password = passwordEncoder.encode(record.getPassword().concat(salt));
+        String password = passwordEncoder.encode(userDetachedDTO.getPassword().concat(salt));
         record.setSalt(salt);
         record.setPassword(password);
         return repository.createUser(record)
+                .onErrorMap(BadRequestException::new)
                 .doOnSuccess(s -> log.info("Account created [{}] {}", s.getId(), username))
                 .doOnError(e -> log.info("Account creation failed for {} {}", username, e.getMessage()));
     }

@@ -25,3 +25,8 @@ auth:
       length: 32 # Max = 64 (check liquibase change-set 1)
     bcrypt:
       strength: 10
+
+springfox:
+  documentation:
+    swagger-ui:
+      base-url: "/documentation"

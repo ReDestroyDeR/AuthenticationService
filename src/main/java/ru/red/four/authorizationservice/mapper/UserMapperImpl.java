@@ -1,9 +1,12 @@
 package ru.red.four.authorizationservice.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.red.four.authorizationservice.dto.UserDTO;
 import ru.red.four.authorizationservice.dto.UserDetachedDTO;
+import ru.red.four.authorizationservice.dto.UserIdentityDTO;
 import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
 
+@Component
 public class UserMapperImpl implements UserMapper {
     /**
      * Maps UserDTO to UserDetachedDTO
@@ -61,5 +64,44 @@ public class UserMapperImpl implements UserMapper {
         record.setUsername(dto.getUsername());
         record.setPassword(dto.getPassword());
         return record;
+    }
+
+    /**
+     * Maps User Detached DTO to User Identity DTO
+     *
+     * @param dto input
+     * @return {@link UserIdentityDTO}
+     */
+    @Override
+    public UserIdentityDTO userDetachedDTOToUserIdentityDTO(UserDetachedDTO dto) {
+        UserIdentityDTO identityDTO = new UserIdentityDTO();
+        identityDTO.setUsername(dto.getUsername());
+        return identityDTO;
+    }
+
+    /**
+     * Maps User DTO to User Identity DTO
+     *
+     * @param dto input
+     * @return {@link UserIdentityDTO}
+     */
+    @Override
+    public UserIdentityDTO userDTOToUserIdentityDTO(UserDTO dto) {
+        UserIdentityDTO identityDTO = new UserIdentityDTO();
+        identityDTO.setUsername(dto.getUsername());
+        return identityDTO;
+    }
+
+    /**
+     * Maps Users Record to User Identity DTO
+     *
+     * @param record input
+     * @return {@link UserIdentityDTO}
+     */
+    @Override
+    public UserIdentityDTO usersRecordToUserIdentityDTO(UsersRecord record) {
+        UserIdentityDTO identityDTO = new UserIdentityDTO();
+        identityDTO.setUsername(record.getUsername());
+        return identityDTO;
     }
 }

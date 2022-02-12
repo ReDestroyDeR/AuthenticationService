@@ -30,3 +30,9 @@ springfox:
   documentation:
     swagger-ui:
       base-url: "/documentation"
+
+external:
+  business:
+    url: ${EXTERNAL_BUSINESS_URL}
+    endpoints:
+      create: "/create"

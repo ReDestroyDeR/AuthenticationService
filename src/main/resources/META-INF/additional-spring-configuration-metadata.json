@@ -24,5 +24,15 @@
       "name": "auth.security.salt.length",
       "type": "java.lang.Integer",
       "description": "Salt length."
+    },
+    {
+      "name": "external.business.url",
+      "type": "java.lang.String",
+      "description": "External business service URL."
+    },
+    {
+      "name": "external.business.endpoints.create",
+      "type": "java.lang.String",
+      "description": "User creation endpoint."
     }
   ] }

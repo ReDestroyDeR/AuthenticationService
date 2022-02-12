@@ -16,13 +16,13 @@ import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
  * A class modelling foreign key relationships and constraints of tables in the
  * default schema.
  */
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Keys {
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<UsersRecord> PK_USERS = Internal.createUniqueKey(Users.USERS, DSL.name("pk-users"), new TableField[]{Users.USERS.ID}, true);
-    public static final UniqueKey<UsersRecord> UQ_USERNAME = Internal.createUniqueKey(Users.USERS, DSL.name("uq-username"), new TableField[]{Users.USERS.USERNAME}, true);
+    public static final UniqueKey<UsersRecord> PK_USERS = Internal.createUniqueKey(Users.USERS, DSL.name("pk-users"), new TableField[] { Users.USERS.ID }, true);
+    public static final UniqueKey<UsersRecord> UQ_USERNAME = Internal.createUniqueKey(Users.USERS, DSL.name("uq-username"), new TableField[] { Users.USERS.USERNAME }, true);
 }

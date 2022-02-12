@@ -1,20 +1,39 @@
 package ru.red.four.authorizationservice.repository;
 
+import org.junit.ClassRule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.AutoConfigureDataJdbc;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.red.four.authorizationservice.configuration.PostgresContainer;
 import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = NONE)
 @Transactional
-@AutoConfigureTestDatabase
-@AutoConfigureDataJdbc
+@Testcontainers
+@ActiveProfiles("test")
 class UserRepositoryTest {
+    @ClassRule
+    @Container
+    public final static PostgreSQLContainer<?> postgresSQLContainer = PostgresContainer.getInstance();
+
+    @BeforeAll
+    public static void startContainers() {
+        postgresSQLContainer.start();
+    }
+
+    @Autowired
+    Environment environment;
+
     @Autowired
     UserRepository service;
 

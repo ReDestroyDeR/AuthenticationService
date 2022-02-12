@@ -1,13 +1,17 @@
 package ru.red.four.authorizationservice.security.jwt;
 
 import io.jsonwebtoken.Jwts;
+import org.junit.ClassRule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.AutoConfigureDataJdbc;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.red.four.authorizationservice.configuration.PostgresContainer;
 import ru.red.four.authorizationservice.jooq.tables.records.UsersRecord;
 
 import java.security.PublicKey;
@@ -19,9 +23,17 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static ru.red.four.authorizationservice.util.UserUtils.createRandomUserWithSaltAndId;
 
 @SpringBootTest(webEnvironment = NONE)
-@AutoConfigureTestDatabase
-@AutoConfigureDataJdbc
+@Testcontainers
+@ActiveProfiles("test")
 class JwtProviderTest {
+    @ClassRule
+    public final static PostgreSQLContainer<?> postgresSQLContainer = PostgresContainer.getInstance();
+
+    @BeforeAll
+    public static void startContainers() {
+        postgresSQLContainer.start();
+    }
+
     @Autowired
     JwtProvider provider;
 

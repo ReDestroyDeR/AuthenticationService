@@ -3,6 +3,10 @@ package ru.red.four.authorizationservice.config;
 import lombok.extern.log4j.Log4j2;
 import org.jooq.ExecuteContext;
 import org.jooq.ExecuteListener;
+import org.jooq.SQLDialect;
+import org.jooq.conf.RenderKeywordCase;
+import org.jooq.conf.RenderNameCase;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
@@ -41,10 +45,20 @@ public class PersistenceConfig {
     public DefaultConfiguration jooqConfig() {
         DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
         jooqConfiguration.set(connectionProvider());
-        jooqConfiguration
-                .set(new DefaultExecuteListenerProvider(exceptionTransformer()));
+        jooqConfiguration.set(jooqRenderSettings());
+        jooqConfiguration.set(new DefaultExecuteListenerProvider(exceptionTransformer()));
+        jooqConfiguration.set(SQLDialect.POSTGRES);
 
         return jooqConfiguration;
+    }
+
+    @Bean
+    public Settings jooqRenderSettings() {
+        return new Settings()
+                .withInterpreterDialect(SQLDialect.POSTGRES)
+                .withParseDialect(SQLDialect.POSTGRES)
+                .withRenderNameCase(RenderNameCase.LOWER)
+                .withRenderKeywordCase(RenderKeywordCase.LOWER);
     }
 
     private ExecuteListener exceptionTransformer() {

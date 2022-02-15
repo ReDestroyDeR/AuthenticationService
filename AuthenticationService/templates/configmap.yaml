@@ -4,11 +4,11 @@ metadata:
   name: {{ include "AuthenticationService.fullname" . }}
 
 data:
-  POSTGRES_URI: {{ .Values.config.postgres.uri }}
-  POSTGRES_PORT: {{ .Values.config.postgres.port }}
-  JWT_CLAIMS_EXP_MINUTES: {{ .Values.config.jwt.claims_exp_minutes }}
-  AUTH_SECURITY_SALT: {{ .Values.config.auth.salt_length }}
-  AUTH_SECURITY_BCRYPT_STRENGTH: {{ .Values.config.auth.bcrypt_strength }}
-  SPRINGFOX_DOCUMENTATION_SWAGGER-UI_BASE-URL: {{ .Values.config.swagger.base_url }}
-  EXTERNAL_BUSINESS_URL: {{ .Values.config.external.business.url }}
-  EXTERNAL_BUSINESS_ENDPOINTS_CREATE: {{ .Values.config.external.business.endpoints.create }}
+  POSTGRES_URI: {{ .Values.config.postgres.uri | b64enc }}
+  POSTGRES_PORT: {{ .Values.config.postgres.port | b64enc}}
+  JWT_CLAIMS_EXP_MINUTES: {{ .Values.config.jwt.claims_exp_minutes | b64enc }}
+  AUTH_SECURITY_SALT: {{ .Values.config.auth.salt_length | b64enc }}
+  AUTH_SECURITY_BCRYPT_STRENGTH: {{ .Values.config.auth.bcrypt_strength | b64enc }}
+  SPRINGFOX_DOCUMENTATION_SWAGGER-UI_BASE-URL: {{ .Values.config.swagger.base_url | b64enc }}
+  EXTERNAL_BUSINESS_URL: {{ .Values.config.external.business.url | b64enc }}
+  EXTERNAL_BUSINESS_ENDPOINTS_CREATE: {{ .Values.config.external.business.endpoints.create | b64enc }}

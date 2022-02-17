@@ -26,12 +26,12 @@ secrets:
 config:
   postgres:
     uri: postgres.svc.cluster.local
-    port: 5432
+    port: "5432"
   jwt:
-    claims_exp_minutes: 30
+    claims_exp_minutes: "30"
   auth:
-    salt_length: 32
-    bcrypt_strength: 10
+    salt_length: "32"
+    bcrypt_strength: "10"
   swagger:
     base_url: /documentation
   external:

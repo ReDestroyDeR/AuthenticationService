@@ -65,7 +65,8 @@ public class JwtProvider {
         log.info("Creating JWT for [{}] {}", id, username);
         LocalDateTime now = LocalDateTime.now();
         return Jwts.builder()
-                .setSubject(id.toString())
+                .setIssuer("auth.arch.homework")
+                .setSubject(username)
                 .setIssuedAt(Date.from(now.toInstant(ZoneOffset.UTC)))
                 .setExpiration(Date.from(
                                 now.plusMinutes(jwtMinutes)

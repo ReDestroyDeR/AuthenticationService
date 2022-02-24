@@ -47,13 +47,11 @@ class JwtProviderTest {
     void doesJwtClaimsMatchOnesOnRecord() {
         UsersRecord record = createRandomUserWithSaltAndId();
         String jwt = provider.createJwt(record);
-        assertEquals(record.getId(),
-                Long.parseLong(
-                        Jwts.parser().setSigningKey(publicKey)
-                                .parseClaimsJws(jwt)
-                                .getBody()
-                                .getSubject()
-                )
+        assertEquals(record.getUsername(),
+                Jwts.parser().setSigningKey(publicKey)
+                        .parseClaimsJws(jwt)
+                        .getBody()
+                        .getSubject()
         );
     }
 

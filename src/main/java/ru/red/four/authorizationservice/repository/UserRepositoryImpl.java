@@ -48,6 +48,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Mono<UsersRecord> createUser(UsersRecord record) {
         return Mono.create(sink -> {
             try {
+                record.changed(USERS.ID, false);
                 sink.success(jooq.insertInto(USERS)
                         .set(record)
                         .returning()

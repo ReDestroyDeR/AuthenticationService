@@ -13,7 +13,6 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk-users
-                    nullable: false
               - column:
                   name: username
                   type: Varchar(64)

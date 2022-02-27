@@ -32,4 +32,4 @@ external:
   business:
     url: ${EXTERNAL_BUSINESS_URL}
     endpoints:
-      create: "/create"
+      create: "/"

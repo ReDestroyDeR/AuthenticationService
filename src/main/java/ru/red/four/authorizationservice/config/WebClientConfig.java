@@ -10,7 +10,7 @@ public class WebClientConfig {
     @Bean
     public WebClient businessServiceWebClient(@Value("${external.business.url}") String url) {
         return WebClient.builder()
-                .baseUrl(url)
+                .baseUrl("http://" + url)
                 .build();
     }
 }

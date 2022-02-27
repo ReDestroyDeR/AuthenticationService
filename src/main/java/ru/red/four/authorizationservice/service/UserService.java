@@ -34,9 +34,10 @@ public interface UserService {
 
     /**
      * Users Delete function
+     * Deletes user only if provided DTO has correct password for that user
      *
-     * @param id User id
-     * @return {@link Boolean} if user has been successfully deleted
+     * @param userDetachedDTO user instance
+     * @return Completion signal, error on failure
      */
-    Mono<Boolean> delete(Long id);
+    Mono<Void> delete(UserDetachedDTO userDetachedDTO);
 }

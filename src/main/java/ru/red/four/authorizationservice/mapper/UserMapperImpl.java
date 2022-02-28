@@ -67,6 +67,34 @@ public class UserMapperImpl implements UserMapper {
     }
 
     /**
+     * Maps UsersRecord to UserDetachedDTO
+     *
+     * @param record input
+     * @return {@link UserDetachedDTO}
+     */
+    @Override
+    public UserDetachedDTO usersRecordToUserDetachedDTO(UsersRecord record) {
+        UserDetachedDTO userDetachedDTO = new UserDetachedDTO();
+        userDetachedDTO.setUsername(record.getUsername());
+        userDetachedDTO.setPassword(record.getPassword());
+        return userDetachedDTO;
+    }
+
+    /**
+     * Maps UserDetachedDTO to UsersRecord
+     *
+     * @param dto input
+     * @return {@link UsersRecord}
+     */
+    @Override
+    public UsersRecord userDetachedDtoToUsersRecord(UserDetachedDTO dto) {
+        UsersRecord usersRecord = new UsersRecord();
+        usersRecord.setUsername(dto.getUsername());
+        usersRecord.setPassword(dto.getPassword());
+        return usersRecord;
+    }
+
+    /**
      * Maps User Detached DTO to User Identity DTO
      *
      * @param dto input

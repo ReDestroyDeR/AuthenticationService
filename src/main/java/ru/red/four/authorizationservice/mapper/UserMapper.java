@@ -39,6 +39,22 @@ public interface UserMapper {
     UsersRecord userDTOToUsersRecord(UserDTO dto);
 
     /**
+     * Maps UsersRecord to UserDetachedDTO
+     *
+     * @param record input
+     * @return {@link UserDetachedDTO}
+     */
+    UserDetachedDTO usersRecordToUserDetachedDTO(UsersRecord record);
+
+    /**
+     * Maps UserDetachedDTO to UsersRecord
+     *
+     * @param dto input
+     * @return {@link UsersRecord}
+     */
+    UsersRecord userDetachedDtoToUsersRecord(UserDetachedDTO dto);
+
+    /**
      * Maps User Detached DTO to User Identity DTO
      *
      * @param dto input

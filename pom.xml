@@ -10,7 +10,7 @@
     </parent>
     <groupId>ru.red.four</groupId>
     <artifactId>AuthorizationService</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>AuthorizationService</name>
     <description>AuthorizationService</description>
     <properties>

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import ru.red.four.authorizationservice.dto.UserDTO;
 import ru.red.four.authorizationservice.dto.UserDetachedDTO;
 import ru.red.four.authorizationservice.exception.BadPasswordException;
 import ru.red.four.authorizationservice.exception.BadRequestException;
@@ -98,22 +97,14 @@ public class UserServiceImpl implements UserService {
                         : Mono.error(new BadPasswordException()));
     }
 
+    @Override
+    public Mono<UsersRecord> updateUsername(String username, UserDetachedDTO dto) {
+        return null;
+    }
 
     @Override
-    public Mono<UsersRecord> update(UserDTO userDTO) {
-        throw new UnsupportedOperationException();
-        // TODO: Invent and implement credentials update contract
-        // return repository.updateUser(userDTO.getId(), userMapper.userDTOToUsersRecord(userDTO))
-        //      .doOnSuccess(s -> log.info(
-        //              "Successfully updated user credentials [{}] {}",
-        //              userDTO.getId(),
-        //              userDTO.getUsername()))
-        //      .doOnError(e -> log.info(
-        //              "Failed updating user credentials [{}] {} {}",
-        //              userDTO.getId(),
-        //              userDTO.getPassword(),
-        //              e
-        //      ));
+    public Mono<UsersRecord> updatePassword(String password, UserDetachedDTO dto) {
+        return null;
     }
 
     @Override

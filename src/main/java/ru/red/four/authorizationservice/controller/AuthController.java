@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.red.four.authorizationservice.dto.UserDetachedDTO;
@@ -92,6 +93,18 @@ public class AuthController {
     @PostMapping("register")
     public Mono<Void> register(@RequestBody UserDetachedDTO userDetachedDTO) {
         return userService.registerUser(userDetachedDTO).then();
+    }
+
+    @PostMapping("change-username")
+    public Mono<Void> changeUsername(@RequestParam("username") String username,
+                                        @RequestBody UserDetachedDTO userDetachedDTO) {
+        return userService.updateUsername(username, userDetachedDTO).then();
+    }
+
+    @PostMapping("change-password")
+    public Mono<Void> changePassword(@RequestParam("password") String password,
+                                        @RequestBody UserDetachedDTO userDetachedDTO) {
+        return userService.updatePassword(password, userDetachedDTO).then();
     }
 
     @DeleteMapping("delete")

@@ -97,13 +97,13 @@ public class AuthController {
 
     @PostMapping("change-username")
     public Mono<Void> changeUsername(@RequestParam("username") String username,
-                                        @RequestBody UserDetachedDTO userDetachedDTO) {
+                                     @RequestBody UserDetachedDTO userDetachedDTO) {
         return userService.updateUsername(username, userDetachedDTO).then();
     }
 
     @PostMapping("change-password")
     public Mono<Void> changePassword(@RequestParam("password") String password,
-                                        @RequestBody UserDetachedDTO userDetachedDTO) {
+                                     @RequestBody UserDetachedDTO userDetachedDTO) {
         return userService.updatePassword(password, userDetachedDTO).then();
     }
 

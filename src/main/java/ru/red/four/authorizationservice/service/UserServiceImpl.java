@@ -1,6 +1,7 @@
 package ru.red.four.authorizationservice.service;
 
 import lombok.extern.log4j.Log4j2;
+import org.jooq.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -104,16 +105,17 @@ public class UserServiceImpl implements UserService {
                     user.setUsername(username);
                     return repository.updateUser(user.getId(), user);
                 })
+                .onErrorMap(e -> e.getClass().equals(DataAccessException.class) ? new BadRequestException(e) : e)
                 .doOnSuccess(s -> log.info(
                         "Successfully updated username for user [{}] {} -> {}",
                         s.getId(),
                         dto.getUsername(),
                         s.getUsername()))
                 .doOnError(e -> log.info(
-                        "Failed updating username for user {} -> {}",
+                        "Failed updating username for user {} -> {} {}",
                         dto.getUsername(),
                         username,
-                        e
+                        e.getMessage()
                 ))
                 .flatMap(user -> businessServiceWebClient.patch()
                         .uri(uriBuilder -> uriBuilder
@@ -130,10 +132,11 @@ public class UserServiceImpl implements UserService {
                                 dto.getUsername(),
                                 username
                         ))
-                        .doOnError(s -> log.info(
-                                "Failed updating username for user {} -> {} on external service",
+                        .doOnError(e -> log.info(
+                                "Failed updating username for user {} -> {} on external service {}",
                                 dto.getUsername(),
-                                username
+                                username,
+                                e.getMessage()
                         ))
                         .thenReturn(user));
     }
@@ -153,7 +156,7 @@ public class UserServiceImpl implements UserService {
                 .doOnError(e -> log.info(
                         "Failed updating password for user {} {}",
                         dto.getUsername(),
-                        e
+                        e.getMessage()
                 ));
     }
 
@@ -165,7 +168,7 @@ public class UserServiceImpl implements UserService {
                         ? Mono.just(i)
                         : Mono.error(new NotFoundException("Can't delete user " + userDetachedDTO.getUsername())))
                 .doOnSuccess(s -> log.info("Successfully deleted user {}", userDetachedDTO.getUsername()))
-                .doOnError(e -> log.info("Failed deleting user {} {}", userDetachedDTO.getUsername(), e))
+                .doOnError(e -> log.info("Failed deleting user {} {}", userDetachedDTO.getUsername(), e.getMessage()))
                 .then(businessServiceWebClient.delete()
                         .uri(uriBuilder -> uriBuilder // We expect Business Service to follow API Contract
                                 .path(businessCreateEndpoint)

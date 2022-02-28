@@ -53,8 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Mono<UsersRecord> registerUser(UserDetachedDTO userDetachedDTO) {
         UsersRecord record = userMapper.userDetachedDtoToUsersRecord(userDetachedDTO);
-        record.setSalt(StringUtil.generateRandomString(this.saltLength));
-        record.setPassword(passwordEncoder.encode(userDetachedDTO.getPassword().concat(record.getSalt())));
+        updateSaltPasswordPair(userDetachedDTO.getPassword(), record);
         return repository.createUser(record)
                 .onErrorMap(BadRequestException::new)
                 .doOnSuccess(s -> log.info("Account created [{}] {}", s.getId(), record.getUsername()))
@@ -141,7 +140,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<UsersRecord> updatePassword(String password, UserDetachedDTO dto) {
-        return null;
+        return validatePassword(dto)
+                .flatMap(user -> {
+                    updateSaltPasswordPair(password, user);
+                    return repository.updateUser(user.getId(), user);
+                })
+                .doOnSuccess(s -> log.info(
+                        "Successfully updated password for user [{}] {}",
+                        s.getId(),
+                        s.getUsername()
+                ))
+                .doOnError(e -> log.info(
+                        "Failed updating password for user {} {}",
+                        dto.getUsername(),
+                        e
+                ));
     }
 
     @Override
@@ -166,6 +179,11 @@ public class UserServiceImpl implements UserService {
                         userDetachedDTO.getUsername()))
                 .doOnError(e -> log.info("Failed deleting user on external business service {}", e.getMessage()))
                 .then();
+    }
+
+    private void updateSaltPasswordPair(String password, UsersRecord record) {
+        record.setSalt(StringUtil.generateRandomString(this.saltLength));
+        record.setPassword(passwordEncoder.encode(password.concat(record.getSalt())));
     }
 
     private Mono<UsersRecord> validatePassword(UserDetachedDTO userDetachedDTO) {

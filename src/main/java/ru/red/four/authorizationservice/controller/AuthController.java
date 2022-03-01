@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +16,6 @@ import ru.red.four.authorizationservice.exception.BadPasswordException;
 import ru.red.four.authorizationservice.exception.BadRequestException;
 import ru.red.four.authorizationservice.service.UserService;
 
-import java.security.PublicKey;
-import java.util.Base64;
-
-import static ru.red.four.authorizationservice.util.StringUtil.wrapString;
-
 /**
  * Controller responsible for handling user registration, patching, signing-in <i>Handing out JWTs</i> and removal.
  * All endpoints have no authority checks so 403 must be impossible
@@ -31,18 +25,13 @@ import static ru.red.four.authorizationservice.util.StringUtil.wrapString;
 public class AuthController {
 
     private final UserService userService;
-    private final String publicKey;
 
     /**
      * @param userService service implementation used as backend for all operations
-     * @param publicKey   which is a part of JWT signing keypair to expose to external APIs
      */
     @Autowired
-    public AuthController(UserService userService, PublicKey publicKey) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.publicKey = "-----BEGIN PUBLIC KEY-----" +
-                wrapString(new String(Base64.getEncoder().encode(publicKey.getEncoded())), 64) +
-                "\n-----END PUBLIC KEY-----\n";
     }
 
     /**
@@ -110,21 +99,5 @@ public class AuthController {
     @DeleteMapping("delete")
     public Mono<Void> delete(@RequestBody UserDetachedDTO userDetachedDTO) {
         return userService.delete(userDetachedDTO);
-    }
-
-    /**
-     * PublicKey exposing endpoint
-     *
-     * @return {@link String} X.509 RSA Public Key
-     */
-    @ApiOperation("Fetch Public Key")
-    @ApiResponse(
-            code = 200,
-            message = "X.509 Public Key",
-            response = String.class
-    )
-    @GetMapping("public-key")
-    public Mono<String> publicKey() {
-        return Mono.just(publicKey);
     }
 }

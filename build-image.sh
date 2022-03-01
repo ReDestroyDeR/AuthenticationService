@@ -1,6 +1,6 @@
 #!/bin/bash
+./mvnw clean package
 mkdir -p target/dependency
-./mvnw package
 cd target/dependency
 jar -xf ../*.jar
 cd ../../

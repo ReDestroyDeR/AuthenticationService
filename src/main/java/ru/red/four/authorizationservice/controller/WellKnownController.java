@@ -2,30 +2,31 @@ package ru.red.four.authorizationservice.controller;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import org.springframework.util.Base64Utils;
+import liquibase.util.MD5Util;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import ru.red.four.authorizationservice.dto.JwksDto;
 
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
 
 @RestController
 @RequestMapping("/.well-known")
 public class WellKnownController {
-    private final Map<String, Object> publicJwk;
+    private final JwksDto jwks;
 
     /**
      * @param publicKey to expose as JWK to outside world
      */
     public WellKnownController(PublicKey publicKey) {
         RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
-        this.publicJwk = generateJwk(rsaPublicKey);
+        this.jwks = new JwksDto();
+        jwks.addKey(generateJwk(rsaPublicKey));
     }
 
     /**
@@ -37,21 +38,21 @@ public class WellKnownController {
     @ApiResponse(
             code = 200,
             message = "JSON of Public JWKs specs",
-            response = Set.class
+            response = JwksDto.class
     )
     @GetMapping("jwks.json")
-    public Mono<Set<Map<String, Object>>> publicKey() {
-        return Mono.just(Set.of(publicJwk));
+    public Mono<JwksDto> publicKey() {
+        return Mono.just(jwks);
     }
 
     private Map<String, Object> generateJwk(RSAPublicKey rsaPublicKey) {
         Map<String, Object> values = new HashMap<>();
         values.put("kty", rsaPublicKey.getAlgorithm());
-        values.put("kid", "static"); // TODO : Implement JWK Rotation
-        values.put("n", Base64Utils.encodeToUrlSafeString(rsaPublicKey.getModulus().toByteArray()));
-        values.put("e", Base64Utils.encodeToUrlSafeString(rsaPublicKey.getPublicExponent().toByteArray()));
-        values.put("alg", "RS256");
-        values.put("use", "sig");
+        values.put("kid", MD5Util.computeMD5(rsaPublicKey.getPublicExponent().toString())); // TODO : Implement JWK Rotation
+        values.put("n", Base64.getUrlEncoder().encodeToString(rsaPublicKey.getModulus().toByteArray()));
+        values.put("e", Base64.getUrlEncoder().encodeToString(rsaPublicKey.getPublicExponent().toByteArray()));
+        // values.put("alg", "RS256");
+        // values.put("use", "sig");
         return values;
     }
 }

@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService {
     public Mono<String> login(UserDetachedDTO userDetachedDTO) {
         // TODO: Add refresh token functionality
         return repository.getUser(userDetachedDTO.getUsername())
+                .switchIfEmpty(Mono.error(NotFoundException::new))
                 .flatMap(user -> passwordEncoder.matches(
                         userDetachedDTO.getPassword().concat(user.getSalt()),
                         user.getPassword())

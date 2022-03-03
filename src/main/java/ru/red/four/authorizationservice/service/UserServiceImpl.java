@@ -53,6 +53,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<UsersRecord> registerUser(UserDetachedDTO userDetachedDTO) {
+        if (userDetachedDTO.getUsername() == null || userDetachedDTO.getUsername().length() < 3) {
+            return Mono.error(new BadRequestException("Username length must be >= 3 characters"));
+        }
+
         UsersRecord record = userMapper.userDetachedDtoToUsersRecord(userDetachedDTO);
         updateSaltPasswordPair(userDetachedDTO.getPassword(), record);
         return repository.createUser(record)
